@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { SolveDialogService } from '..//..//service/solve-dialog/solve-dialog.service';
 import { SolveDialog, SolveDialogRequest } from '../../interface/solveDialog';
+import { CommonModule } from '@angular/common';
 
 import { HttpClientModule } from '@angular/common/http';
 import { TableModule } from 'primeng/table';
@@ -16,13 +17,16 @@ import { TagModule } from 'primeng/tag';
     TableModule,
     InputTextModule,
     FormsModule,
-    TagModule,],
+    TagModule,
+    CommonModule
+  ],
   templateUrl: './solve-dialog.component.html',
   styleUrl: './solve-dialog.component.scss'
 })
 export class SolveDialogComponent {
 
   solveDialogs: SolveDialog[] = [];
+  totalRecords: number = 0;
   globalFilter = '';
   request: SolveDialogRequest = {
     first: 0,
@@ -37,8 +41,15 @@ export class SolveDialogComponent {
 
   getSolveDialogList() {
     this.solveDialogService.getSolveDialogs(this.request).subscribe(
-      data => this.solveDialogs = data
-    )
+      data => {
+        console.log('Backenddan kelgan ma\'lumotlar:', data);
+        this.solveDialogs = data.items;
+        this.totalRecords = data.total;
+      },
+      error => {
+        console.error('Xatolik:', error);
+      }
+    );
   }
 
   loadSolveDialogs($event: TableLazyLoadEvent) {

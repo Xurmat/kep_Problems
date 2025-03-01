@@ -5,6 +5,7 @@ export interface SolveDialog {
     tags: string;
     rating: number;
     attempts: number;
+    active: boolean;
   }
   
   export interface SolveDialogRequest {

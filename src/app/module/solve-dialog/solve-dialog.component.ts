@@ -39,37 +39,41 @@ export class SolveDialogComponent {
   }
   constructor(private solveDialogService: SolveDialogService) { }
 
-  getSolveDialogList() {
-    this.solveDialogService.getSolveDialogs(this.request).subscribe(
-      data => {
-        console.log('Backenddan kelgan ma\'lumotlar:', data);
-        this.solveDialogs = data.items;
-        this.totalRecords = data.total;
-      },
-      error => {
-        console.error('Xatolik:', error);
-      }
-    );
-  }
-
-  loadSolveDialogs($event: TableLazyLoadEvent) {
-    console.log($event);
-    this.request.sortField = $event.sortField || '';
-    this.request.sortOrder = $event.sortOrder || 1;
-    this.request.first = $event.first || 0
+  ngOnInit(): void {
     this.getSolveDialogList();
-  }
+}
 
-  filterSolveDialog() {
-    this.request = {
-      ...this.request,
-      first: 0,
-      filter: {
-        firstName: this.globalFilter
+getSolveDialogList() {
+  this.solveDialogService.getSolveDialogs(this.request).subscribe({
+    next: (res: any) => {
+      if(res && res.data){
+        // console.log('Backenddan kelgan ma\'lumotlar:', res);
+        this.solveDialogs = res.data;
+        this.totalRecords = res.total;
       }
+    },
+    error: (err) => {
+      console.log(err);
     }
-    this.getSolveDialogList();
+  });
+}
+
+loadSolveDialogs($event: TableLazyLoadEvent) {
+  // console.log($event);
+  this.request.sortField = $event.sortField || '';
+  this.request.sortOrder = $event.sortOrder || 1;
+  this.request.first = $event.first || 0;
+  this.getSolveDialogList();
+}
+
+filterSolveDialog() {
+  this.request = {
+    ...this.request,
+    first: 0,
+    filter: {
+      firstName: this.globalFilter
+    }
   }
-
-
+  this.getSolveDialogList();
+}
 }

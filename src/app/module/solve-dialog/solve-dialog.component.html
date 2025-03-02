@@ -31,8 +31,8 @@
       <th pSortableColumn="id">
         ID <p-sortIcon field="id"></p-sortIcon>
       </th>
-      <th pSortableColumn="title">Title <p-sortIcon field="title"></p-sortIcon></th>
-      <th pSortableColumn="difficultTitle">Difficulty Title <p-sortIcon field="difficultTitle"></p-sortIcon></th>
+      <th>Title</th>
+      <th>Difficulty Title</th>
       <th>Tags</th>
       <th>Rating</th>
       <th>Attempts</th>
@@ -42,10 +42,24 @@
     <tr>
       <td>{{ solveDialog.id }}</td>
       <td>{{ solveDialog.title }}</td>
-      <td>{{ solveDialog.difficultTitle }}</td>
-      <td>{{ solveDialog.tags }}</td>
-      <td>{{ solveDialog.rating }}</td>
-      <td>{{ solveDialog.attempts }}</td>
+      <td>{{ solveDialog.difficultyTitle }}</td>
+      <td>
+        @for (item of solveDialog.tags; track $index) {
+          <span>{{ item.name  }}, </span>
+        }
+      </td>
+      <td>
+        <span>
+          <i class="fa-regular fa-thumbs-up"></i> {{ solveDialog.likesCount }}
+        </span> ---
+        <span>
+          <i class="fa-regular fa-thumbs-down"></i> {{ solveDialog.dislikesCount }}
+        </span>
+      </td>
+      <td>
+        <span class="solved">{{ solveDialog.solved }}</span> /
+        <span class="attemptsCount">{{ solveDialog.attemptsCount }}</span>
+      </td>
     </tr>
   </ng-template>
 </p-table>
